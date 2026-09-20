@@ -1,0 +1,735 @@
+asyncapi: 3.0.0
+id: urn:event-dynamics:realtime:v0.2.0
+info:
+  title: Event Dynamics Realtime API
+  version: 0.2.0
+  description: |-
+    Server-side perspective: all operations send server-to-client SSE messages. Commands use REST. This contract shares the Event Dynamics REST authorization and entitlement rules; it never grants authority by message receipt.
+
+    Use a fetch-based streaming client with Authorization: Bearer and Accept: text/event-stream. Native browser EventSource does not accept arbitrary Authorization headers. Never place credentials in query strings. Parse UTF-8 SSE framing across arbitrary transport chunks, including multiline data. SSE event is payload.type; id is the opaque delivery cursor for durable change notices. Control/liveness messages have no id and never advance the resume cursor. Comment heartbeats every 20 seconds keep the connection alive.
+
+    On connection and reconnection refresh current access and REST state before re-enabling actions. Open/buffer the stream before refreshing state, then process buffered notices by fetching current authorized REST projections. Messages are invalidations, not authoritative partial patches. Deduplicate durable notices by messageId, coalesce repeated reads, and never replace a newer REST revision with an older one. Deletes and hidden records require list refresh. This closes the snapshot/subscription race without claiming historical collection snapshots.
+
+    Retain durable replay history for at least 15 minutes. The client sends Last-Event-ID manually on reconnection. Cursors bind channel, scope, authorization generation and log generation; history is replayed only under current access. Missing cursor starts fresh with stream.ready and mandatory REST refresh. Expired, invalid, foreign or unavailable cursors cause stream.resync_required followed by close; discard cursor and refresh. No silent resume after a gap. Delivery is at least once. Replay support is application behavior, not supplied by SSE framing alone.
+
+    Per-connection buffer limit is 1000 messages or 1 MiB, whichever first; overflow sends resync_required if possible and closes. These are explicit engineering defaults to load-test. Reconnect with exponential backoff and jitter between 1 and 30 seconds, honoring Retry-After; stop on 401/403 until reauthentication. Recheck authorization per message and on revocation, including stream termination within five seconds. Close immediately even when access.revoked cannot be delivered. Recheck parent order/ticket grant and field permissions continuously. Never replay private fields made inaccessible by scope changes.
+
+    No QR material, secret credentials, payment details, attendee needs or raw AI prompts in stream payloads. AI output is read through the authorized job resource; liveness at most every ten seconds reports true stage without inventing output. REST remains available as recovery with bounded backoff. NFR freshness targets include enqueue, delivery, client processing and rendering; they are not measured by HTTP handshake latency.
+  contact:
+    name: Event Dynamics Engineering
+  license:
+    name: Proprietary
+defaultContentType: application/json
+servers:
+  production:
+    host: api.eventdynamics.example
+    pathname: /v1/streams
+    protocol: https
+    description: Placeholder deployment hostname. Authenticated SSE; exact HTTP handshakes in the REST document.
+channels:
+  runOfShow:
+    address: /organizations/{organizationId}/events/{eventId}/run-of-show
+    title: Run-of-show and public programme updates
+    description: Currently authorized scope only. Inherit the corresponding REST record and field visibility.
+      External event membership is sufficient for its event channels; organization workspace stream requires
+      organization authority.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      RunOfShowChanged:
+        $ref: '#/components/messages/RunOfShowChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+    parameters:
+      organizationId:
+        description: Authorized organizationId; UUID identifier.
+      eventId:
+        description: Authorized eventId; UUID identifier.
+    x-rest-operationIds:
+    - listRunOfShowItems
+    - getPublicProgramme
+    - getReadiness
+  admissions:
+    address: /organizations/{organizationId}/events/{eventId}/admissions
+    title: Live admission activity and attendance aggregates
+    description: Currently authorized scope only. Inherit the corresponding REST record and field visibility.
+      External event membership is sufficient for its event channels; organization workspace stream requires
+      organization authority.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      AdmissionsChanged:
+        $ref: '#/components/messages/AdmissionsChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+    parameters:
+      organizationId:
+        description: Authorized organizationId; UUID identifier.
+      eventId:
+        description: Authorized eventId; UUID identifier.
+    x-rest-operationIds:
+    - listAdmissions
+    - getAttendanceAggregate
+    - listAdmissionConflicts
+  announcements:
+    address: /organizations/{organizationId}/events/{eventId}/announcements
+    title: Operational announcements
+    description: Currently authorized scope only. Inherit the corresponding REST record and field visibility.
+      External event membership is sufficient for its event channels; organization workspace stream requires
+      organization authority.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      AnnouncementsChanged:
+        $ref: '#/components/messages/AnnouncementsChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+    parameters:
+      organizationId:
+        description: Authorized organizationId; UUID identifier.
+      eventId:
+        description: Authorized eventId; UUID identifier.
+    x-rest-operationIds:
+    - listAnnouncements
+  orderStatus:
+    address: /public/orders/{orderId}/status
+    title: Purchaser order and payment status
+    description: Currently authorized scope only. Exact order view_order session; a ticket-only session cannot
+      subscribe.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      OrderStatusChanged:
+        $ref: '#/components/messages/OrderStatusChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+    parameters:
+      orderId:
+        description: Authorized orderId; UUID identifier.
+    x-rest-operationIds:
+    - getOrder
+    - getOrderTickets
+  aiJobProgress:
+    address: /organizations/{organizationId}/ai-jobs/{jobId}/progress
+    title: AI job queue position, stage, and output
+    description: Currently authorized scope only. Inherit the corresponding REST record and field visibility.
+      External event membership is sufficient for its event channels; organization workspace stream requires
+      organization authority.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      AiJobProgressChanged:
+        $ref: '#/components/messages/AiJobProgressChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+      JobLiveness:
+        $ref: '#/components/messages/JobLiveness'
+    parameters:
+      organizationId:
+        description: Authorized organizationId; UUID identifier.
+      jobId:
+        description: Authorized jobId; UUID identifier.
+    x-rest-operationIds:
+    - getAiJob
+  workspace:
+    address: /organizations/{organizationId}/workspace
+    title: Workspace-wide access, quota, and system notices
+    description: Currently authorized scope only. Inherit the corresponding REST record and field visibility.
+      External event membership is sufficient for its event channels; organization workspace stream requires
+      organization authority.
+    servers:
+    - $ref: '#/servers/production'
+    messages:
+      WorkspaceChanged:
+        $ref: '#/components/messages/WorkspaceChanged'
+      StreamReady:
+        $ref: '#/components/messages/StreamReady'
+      ResyncRequired:
+        $ref: '#/components/messages/ResyncRequired'
+      AccessRevoked:
+        $ref: '#/components/messages/AccessRevoked'
+    parameters:
+      organizationId:
+        description: Authorized organizationId; UUID identifier.
+    x-rest-operationIds:
+    - listMyNotifications
+    - listMyEventAccess
+operations:
+  sendRunOfShow:
+    action: send
+    channel:
+      $ref: '#/channels/runOfShow'
+    summary: Send authorized runOfShow updates
+    security:
+    - $ref: '#/components/securitySchemes/teamSession'
+    messages:
+    - $ref: '#/channels/runOfShow/messages/RunOfShowChanged'
+    - $ref: '#/channels/runOfShow/messages/StreamReady'
+    - $ref: '#/channels/runOfShow/messages/ResyncRequired'
+    - $ref: '#/channels/runOfShow/messages/AccessRevoked'
+  sendAdmissions:
+    action: send
+    channel:
+      $ref: '#/channels/admissions'
+    summary: Send authorized admissions updates
+    security:
+    - $ref: '#/components/securitySchemes/teamSession'
+    messages:
+    - $ref: '#/channels/admissions/messages/AdmissionsChanged'
+    - $ref: '#/channels/admissions/messages/StreamReady'
+    - $ref: '#/channels/admissions/messages/ResyncRequired'
+    - $ref: '#/channels/admissions/messages/AccessRevoked'
+  sendAnnouncements:
+    action: send
+    channel:
+      $ref: '#/channels/announcements'
+    summary: Send authorized announcements updates
+    security:
+    - $ref: '#/components/securitySchemes/teamSession'
+    messages:
+    - $ref: '#/channels/announcements/messages/AnnouncementsChanged'
+    - $ref: '#/channels/announcements/messages/StreamReady'
+    - $ref: '#/channels/announcements/messages/ResyncRequired'
+    - $ref: '#/channels/announcements/messages/AccessRevoked'
+  sendOrderStatus:
+    action: send
+    channel:
+      $ref: '#/channels/orderStatus'
+    summary: Send authorized orderStatus updates
+    security:
+    - $ref: '#/components/securitySchemes/secureLink'
+    messages:
+    - $ref: '#/channels/orderStatus/messages/OrderStatusChanged'
+    - $ref: '#/channels/orderStatus/messages/StreamReady'
+    - $ref: '#/channels/orderStatus/messages/ResyncRequired'
+    - $ref: '#/channels/orderStatus/messages/AccessRevoked'
+  sendAiJobProgress:
+    action: send
+    channel:
+      $ref: '#/channels/aiJobProgress'
+    summary: Send authorized aiJobProgress updates
+    security:
+    - $ref: '#/components/securitySchemes/teamSession'
+    messages:
+    - $ref: '#/channels/aiJobProgress/messages/AiJobProgressChanged'
+    - $ref: '#/channels/aiJobProgress/messages/StreamReady'
+    - $ref: '#/channels/aiJobProgress/messages/ResyncRequired'
+    - $ref: '#/channels/aiJobProgress/messages/AccessRevoked'
+    - $ref: '#/channels/aiJobProgress/messages/JobLiveness'
+  sendWorkspace:
+    action: send
+    channel:
+      $ref: '#/channels/workspace'
+    summary: Send authorized workspace updates
+    security:
+    - $ref: '#/components/securitySchemes/teamSession'
+    messages:
+    - $ref: '#/channels/workspace/messages/WorkspaceChanged'
+    - $ref: '#/channels/workspace/messages/StreamReady'
+    - $ref: '#/channels/workspace/messages/ResyncRequired'
+    - $ref: '#/channels/workspace/messages/AccessRevoked'
+components:
+  securitySchemes:
+    teamSession:
+      type: http
+      scheme: bearer
+      description: |
+        Team/organizer session credential. Expires after 12 hours without
+        activity and 7 days absolutely (NFR-SEC-08). Sensitive operations
+        additionally require password reauthentication within the preceding
+        10 minutes.
+    secureLink:
+      type: http
+      scheme: bearer
+      description: Opaque 256-bit purchaser/attendee session bearer. Scope and capabilities bind one order
+        or ticket. Expires at min(issue + 24h, parent grant expiry); parent revocation invalidates sessions.
+        Email grants last 30 days. Use POST /public/access-sessions for exchange.
+  schemas:
+    StreamReady:
+      type: object
+      properties:
+        type:
+          type: string
+          const: stream.ready
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        authorizationRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        refreshRequired:
+          type: boolean
+          const: true
+      additionalProperties: false
+      required:
+      - type
+      - emittedAt
+      - authorizationRevision
+      - refreshRequired
+    ResyncRequired:
+      type: object
+      properties:
+        type:
+          type: string
+          const: stream.resync_required
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        reason:
+          type: string
+          enum:
+          - cursor_expired
+          - cursor_invalid
+          - scope_changed
+          - history_unavailable
+          - buffer_overflow
+          - server_restart
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - emittedAt
+      - reason
+    AccessRevoked:
+      type: object
+      properties:
+        type:
+          type: string
+          const: access.revoked
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        reason:
+          type: string
+          enum:
+          - revoked
+          - expired
+          - suspended
+          - scope_changed
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - emittedAt
+      - reason
+    JobLiveness:
+      type: object
+      properties:
+        type:
+          type: string
+          const: job.liveness
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        jobId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        stage:
+          type: string
+          minLength: 0
+          maxLength: 200
+        lastProgressAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - emittedAt
+      - jobId
+      - stage
+      - lastProgressAt
+    RunOfShowChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: runOfShow.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - run_of_show
+          - session
+          - readiness
+          - programme_publication
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+    AdmissionsChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: admissions.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - admission
+          - attendance_aggregate
+          - admission_conflict
+          - offline_sync
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+    AnnouncementsChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: announcements.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - announcement
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+    OrderStatusChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: orderStatus.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - order
+          - ticket
+          - payment_attempt
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+    AiJobProgressChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: aiJobProgress.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - ai_job
+          - planning_section
+          - action_proposal
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+    WorkspaceChanged:
+      type: object
+      properties:
+        type:
+          type: string
+          const: workspace.changed
+          maxLength: 10000
+        messageId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        emittedAt:
+          type: string
+          format: date-time
+          maxLength: 10000
+        resourceKind:
+          type: string
+          enum:
+          - effective_access
+          - notification
+          - import_job
+          - export_job
+          - quota
+          - dependency
+          maxLength: 10000
+        resourceId:
+          type: string
+          format: uuid
+          maxLength: 10000
+        resourceRevision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        change:
+          type: string
+          enum:
+          - created
+          - updated
+          - deleted
+          - scope_invalidated
+          maxLength: 10000
+      additionalProperties: false
+      required:
+      - type
+      - messageId
+      - emittedAt
+      - resourceKind
+      - resourceId
+      - resourceRevision
+      - change
+      description: Committed change notice. Fetch current permitted REST view; scope invalidation requires
+        collection refresh. resourceId is the relevant aggregate ID for aggregate/quota notices. Do not interpret
+        a message as permission.
+  messages:
+    StreamReady:
+      name: StreamReady
+      title: StreamReady
+      summary: Non-durable stream control; no SSE id.
+      payload:
+        $ref: '#/components/schemas/StreamReady'
+    ResyncRequired:
+      name: ResyncRequired
+      title: ResyncRequired
+      summary: Non-durable stream control; no SSE id.
+      payload:
+        $ref: '#/components/schemas/ResyncRequired'
+    AccessRevoked:
+      name: AccessRevoked
+      title: AccessRevoked
+      summary: Non-durable stream control; no SSE id.
+      payload:
+        $ref: '#/components/schemas/AccessRevoked'
+    JobLiveness:
+      name: JobLiveness
+      title: JobLiveness
+      summary: Non-durable stream control; no SSE id.
+      payload:
+        $ref: '#/components/schemas/JobLiveness'
+    RunOfShowChanged:
+      name: RunOfShowChanged
+      title: RunOfShowChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/RunOfShowChanged'
+    AdmissionsChanged:
+      name: AdmissionsChanged
+      title: AdmissionsChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/AdmissionsChanged'
+    AnnouncementsChanged:
+      name: AnnouncementsChanged
+      title: AnnouncementsChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/AnnouncementsChanged'
+    OrderStatusChanged:
+      name: OrderStatusChanged
+      title: OrderStatusChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/OrderStatusChanged'
+    AiJobProgressChanged:
+      name: AiJobProgressChanged
+      title: AiJobProgressChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/AiJobProgressChanged'
+    WorkspaceChanged:
+      name: WorkspaceChanged
+      title: WorkspaceChanged
+      summary: Durable replayable notice; SSE id is the delivery cursor.
+      payload:
+        $ref: '#/components/schemas/WorkspaceChanged'

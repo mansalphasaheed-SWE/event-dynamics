@@ -1,0 +1,40 @@
+# Installed dependencies and local pnpm cache
+node_modules/
+.pnpm-store/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Generated output and test coverage
+dist/
+build/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# Local database files
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Local editor settings and temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

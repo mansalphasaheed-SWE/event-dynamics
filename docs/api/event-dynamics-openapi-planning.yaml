@@ -1,0 +1,368 @@
+openapi: 3.1.0
+info:
+  title: Event Dynamics Planning API — generated view
+  version: 0.2.0
+  description: Generated navigation view into event-dynamics-openapi.yaml, the complete authoritative REST
+    contract. Keep these files adjacent. Do not merge this view into the main document. Paths with planning
+    operations reference the whole Path Item, including any co-located methods. Authorization, idempotency,
+    ETags and invariants in the main document are normative. See API-Review-and-Implementation-Guide.md for
+    review scope and release gates.
+servers:
+- url: https://api.eventdynamics.example/v1
+  description: Production
+- url: https://api.staging.eventdynamics.example/v1
+  description: Staging
+security:
+- teamSession: []
+paths:
+  /organizations/{organizationId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}
+  /organizations/{organizationId}/members/{membershipId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1members~1{membershipId}
+  /organizations/{organizationId}/events/{eventId}/cancellation-proposals:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1cancellation-proposals
+  /organizations/{organizationId}/events/{eventId}/team-members/{membershipId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1team-members~1{membershipId}
+  /organizations/{organizationId}/events/{eventId}/tasks/{taskId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tasks~1{taskId}
+  /organizations/{organizationId}/events/{eventId}/check-in-devices:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1check-in-devices
+  /organizations/{organizationId}/events/{eventId}/check-in-devices/{deviceId}/authorization:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1check-in-devices~1{deviceId}~1authorization
+  /organizations/{organizationId}/events/{eventId}/offline-sync-batches:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1offline-sync-batches
+  /organizations/{organizationId}/events/{eventId}/refunds:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1refunds
+  /organizations/{organizationId}/events/{eventId}/import-jobs/{jobId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1import-jobs~1{jobId}
+  /organizations/{organizationId}/custom-roles:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1custom-roles
+  /organizations/{organizationId}/custom-roles/{roleId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1custom-roles~1{roleId}
+  /organizations/{organizationId}/events/{eventId}/team-members/{membershipId}/areas:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1team-members~1{membershipId}~1areas
+  /organizations/{organizationId}/events/{eventId}/team-members/{membershipId}/locations:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1team-members~1{membershipId}~1locations
+  /organizations/{organizationId}/invitations/{invitationId}/resend:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1invitations~1{invitationId}~1resend
+  /organizations/{organizationId}/invitations/{invitationId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1invitations~1{invitationId}
+  /organizations/{organizationId}/events/{eventId}/teams:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1teams
+  /organizations/{organizationId}/events/{eventId}/teams/{teamId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1teams~1{teamId}
+  /organizations/{organizationId}/events/{eventId}/teams/{teamId}/members:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1teams~1{teamId}~1members
+  /organizations/{organizationId}/events/{eventId}/shifts:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1shifts
+  /organizations/{organizationId}/events/{eventId}/shifts/{shiftId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1shifts~1{shiftId}
+  /organizations/{organizationId}/events/{eventId}/availability:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1availability
+  /organizations/{organizationId}/events/{eventId}/responsibilities:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1responsibilities
+  /organizations/{organizationId}/events/{eventId}/tracks:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tracks
+  /organizations/{organizationId}/events/{eventId}/tracks/{trackId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tracks~1{trackId}
+  /organizations/{organizationId}/events/{eventId}/sessions/{sessionId}/registrations:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1sessions~1{sessionId}~1registrations
+  /organizations/{organizationId}/events/{eventId}/speakers:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1speakers
+  /organizations/{organizationId}/events/{eventId}/speakers/{speakerId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1speakers~1{speakerId}
+  /organizations/{organizationId}/events/{eventId}/session-registration-settings:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1session-registration-settings
+  /organizations/{organizationId}/events/{eventId}/run-of-show:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1run-of-show
+  /organizations/{organizationId}/events/{eventId}/run-of-show/{itemId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1run-of-show~1{itemId}
+  /organizations/{organizationId}/checklist-templates:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1checklist-templates
+  /organizations/{organizationId}/events/{eventId}/checklist-template-applications:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1checklist-template-applications
+  /organizations/{organizationId}/events/{eventId}/venue:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1venue
+  /organizations/{organizationId}/events/{eventId}/rooms:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1rooms
+  /organizations/{organizationId}/events/{eventId}/rooms/{roomId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1rooms~1{roomId}
+  /organizations/{organizationId}/events/{eventId}/operational-areas:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1operational-areas
+  /organizations/{organizationId}/events/{eventId}/vendors:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1vendors
+  /organizations/{organizationId}/events/{eventId}/vendors/{vendorId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1vendors~1{vendorId}
+  /organizations/{organizationId}/events/{eventId}/vendors/{vendorId}/deliveries:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1vendors~1{vendorId}~1deliveries
+  /organizations/{organizationId}/events/{eventId}/deliveries/{deliveryId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1deliveries~1{deliveryId}
+  /organizations/{organizationId}/events/{eventId}/deliveries/{deliveryId}/receipt:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1deliveries~1{deliveryId}~1receipt
+  /organizations/{organizationId}/events/{eventId}/resources:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1resources
+  /organizations/{organizationId}/events/{eventId}/resources/{resourceId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1resources~1{resourceId}
+  /organizations/{organizationId}/events/{eventId}/budget:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1budget
+  /organizations/{organizationId}/events/{eventId}/expense-categories:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expense-categories
+  /organizations/{organizationId}/events/{eventId}/expenses:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expenses
+  /organizations/{organizationId}/events/{eventId}/expenses/{expenseId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expenses~1{expenseId}
+  /organizations/{organizationId}/events/{eventId}/expenses/{expenseId}/approval:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expenses~1{expenseId}~1approval
+  /organizations/{organizationId}/events/{eventId}/risks:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1risks
+  /organizations/{organizationId}/events/{eventId}/risks/{riskId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1risks~1{riskId}
+  /organizations/{organizationId}/events/{eventId}/risks/{riskId}/backup-plans:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1risks~1{riskId}~1backup-plans
+  /organizations/{organizationId}/events/{eventId}/incidents:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1incidents
+  /organizations/{organizationId}/events/{eventId}/incidents/{incidentId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1incidents~1{incidentId}
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}/attendee:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}~1attendee
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}/delivery:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}~1delivery
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}/qr:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}~1qr
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}/cancellation:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}~1cancellation
+  /organizations/{organizationId}/events/{eventId}/ticket-invitations:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1ticket-invitations
+  /organizations/{organizationId}/events/{eventId}/venue-registration:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1venue-registration
+  /organizations/{organizationId}/events/{eventId}/check-in-devices/{deviceId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1check-in-devices~1{deviceId}
+  /organizations/{organizationId}/events/{eventId}/offline-sync-batches/{batchId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1offline-sync-batches~1{batchId}
+  /organizations/{organizationId}/events/{eventId}/disputes:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1disputes
+  /organizations/{organizationId}/events/{eventId}/disputes/{disputeId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1disputes~1{disputeId}
+  /organizations/{organizationId}/events/{eventId}/notification-deliveries:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1notification-deliveries
+  /organizations/{organizationId}/events/{eventId}/announcements:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1announcements
+  /me/notification-preferences:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1me~1notification-preferences
+  /organizations/{organizationId}/events/{eventId}/attachments:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1attachments
+  /organizations/{organizationId}/events/{eventId}/attachments/{attachmentId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1attachments~1{attachmentId}
+  /organizations/{organizationId}/events/{eventId}/dashboards/{dashboardKind}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1dashboards~1{dashboardKind}
+  /organizations/{organizationId}/events/{eventId}/readiness:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1readiness
+  /organizations/{organizationId}/events/{eventId}/reports/{reportKind}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1reports~1{reportKind}
+  /organizations/{organizationId}/events/{eventId}/planning-sections:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1planning-sections
+  /organizations/{organizationId}/events/{eventId}/planning-sections/{sectionId}/decision:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1planning-sections~1{sectionId}~1decision
+  /organizations/{organizationId}/events/{eventId}/planning-sections/{sectionId}/application:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1planning-sections~1{sectionId}~1application
+  /organizations/{organizationId}/events/{eventId}/planning-sections/{sectionId}/discussion:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1planning-sections~1{sectionId}~1discussion
+  /organizations/{organizationId}/events/{eventId}/automation-rules:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1automation-rules
+  /organizations/{organizationId}/events/{eventId}/automation-rules/{ruleId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1automation-rules~1{ruleId}
+  /organizations/{organizationId}/ai-agreement:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-agreement
+  /organizations/{organizationId}/events/{eventId}/ai-pause:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1ai-pause
+  /organizations/{organizationId}/memory:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory
+  /organizations/{organizationId}/memory/{memoryId}/promotion:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory~1{memoryId}~1promotion
+  /organizations/{organizationId}/events/{eventId}/ai-reversals:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1ai-reversals
+  /plans:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1plans
+  /organizations/{organizationId}/provider-events:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1provider-events
+  /organizations/{organizationId}/subscription:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1subscription
+  /organizations/{organizationId}/billing-records:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1billing-records
+  /organizations/{organizationId}/ai-topups:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-topups
+  /organizations/{organizationId}/data-requests:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1data-requests
+  /organizations/{organizationId}/events/{eventId}/publication:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1publication
+  /organizations/{organizationId}/events/{eventId}/archive:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1archive
+  /organizations/{organizationId}/events/{eventId}/sales-settings:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1sales-settings
+  /organizations/{organizationId}/events/{eventId}/inventory-overallocation-approvals:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1inventory-overallocation-approvals
+  /organizations/{organizationId}/events/{eventId}/policy-versions:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1policy-versions
+  /organizations/{organizationId}/events/{eventId}/policy-publications:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1policy-publications
+  /organizations/{organizationId}/customer-email-consent:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1customer-email-consent
+  /organizations/{organizationId}/consent-records:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1consent-records
+  /organizations/{organizationId}/events/{eventId}/financial-exceptions:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1financial-exceptions
+  /organizations/{organizationId}/events/{eventId}/financial-exceptions/{exceptionId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1financial-exceptions~1{exceptionId}
+  /organizations/{organizationId}/events/{eventId}/refunds/{refundId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1refunds~1{refundId}
+  /organizations/{organizationId}/events/{eventId}/attendance-aggregate:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1attendance-aggregate
+  /organizations/{organizationId}/events/{eventId}/check-in-devices/{deviceId}/datasets/{datasetId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1check-in-devices~1{deviceId}~1datasets~1{datasetId}
+  /organizations/{organizationId}/events/{eventId}/admission-conflicts:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1admission-conflicts
+  /organizations/{organizationId}/events/{eventId}/admission-conflicts/{conflictId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1admission-conflicts~1{conflictId}
+  /organizations/{organizationId}/events/{eventId}/custom-roles:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1custom-roles
+  /organizations/{organizationId}/events/{eventId}/custom-roles/{roleId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1custom-roles~1{roleId}
+  /organizations/{organizationId}/events/{eventId}/permission-approvals:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1permission-approvals
+  /organizations/{organizationId}/events/{eventId}/effective-access:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1effective-access
+  /me/event-access:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1me~1event-access
+  /organizations/{organizationId}/events/{eventId}/programme-publications:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1programme-publications
+  /organizations/{organizationId}/events/{eventId}/sessions/{sessionId}/confirmation:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1sessions~1{sessionId}~1confirmation
+  /public/tickets/{ticketId}/session-registrations/{registrationId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1public~1tickets~1{ticketId}~1session-registrations~1{registrationId}
+  /organizations/{organizationId}/events/{eventId}/expenses/{expenseId}/payments:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expenses~1{expenseId}~1payments
+  /organizations/{organizationId}/events/{eventId}/record-links:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1record-links
+  /organizations/{organizationId}/events/{eventId}/record-links/{linkId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1record-links~1{linkId}
+  /organizations/{organizationId}/events/{eventId}/resources/{resourceId}/allocations:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1resources~1{resourceId}~1allocations
+  /organizations/{organizationId}/events/{eventId}/resources/{resourceId}/allocations/{allocationId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1resources~1{resourceId}~1allocations~1{allocationId}
+  /organizations/{organizationId}/events/{eventId}/comments:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1comments
+  /organizations/{organizationId}/events/{eventId}/comments/{commentId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1comments~1{commentId}
+  /organizations/{organizationId}/checklist-templates/{templateId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1checklist-templates~1{templateId}
+  /organizations/{organizationId}/events/{eventId}/team-members/{membershipId}/availability:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1team-members~1{membershipId}~1availability
+  /organizations/{organizationId}/events/{eventId}/team-members/{membershipId}/operational-state:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1team-members~1{membershipId}~1operational-state
+  /organizations/{organizationId}/ai-quotes:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-quotes
+  /organizations/{organizationId}/events/{eventId}/action-proposals/{proposalId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1action-proposals~1{proposalId}
+  /organizations/{organizationId}/events/{eventId}/action-proposals/{proposalId}/executions:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1action-proposals~1{proposalId}~1executions
+  /organizations/{organizationId}/events/{eventId}/proposal-executions/{executionId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1proposal-executions~1{executionId}
+  /organizations/{organizationId}/ai-unit-lots:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-unit-lots
+  /organizations/{organizationId}/ai-unit-ledger:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-unit-ledger
+  /organizations/{organizationId}/events/{eventId}/planning-sections/{sectionId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1planning-sections~1{sectionId}
+  /organizations/{organizationId}/ai-agreement-history:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-agreement-history
+  /organizations/{organizationId}/ai-mode:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1ai-mode
+  /organizations/{organizationId}/memory-promotions:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory-promotions
+  /organizations/{organizationId}/memory-promotions/{promotionId}/decision:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory-promotions~1{promotionId}~1decision
+  /organizations/{organizationId}/memory/{memoryId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory~1{memoryId}
+  /organizations/{organizationId}/billing-quotes:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1billing-quotes
+  /organizations/{organizationId}/billing-purchases:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1billing-purchases
+  /organizations/{organizationId}/billing-purchases/{purchaseId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1billing-purchases~1{purchaseId}
+  /organizations/{organizationId}/event-access-grants:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1event-access-grants
+  /organizations/{organizationId}/billing-profile:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1billing-profile
+  /organizations/{organizationId}/entitlement-usage:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1entitlement-usage
+  /organizations/{organizationId}/onboarding:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1onboarding
+  /organizations/{organizationId}/events/{eventId}/import-jobs/{jobId}/rows:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1import-jobs~1{jobId}~1rows
+  /organizations/{organizationId}/events/{eventId}/import-jobs/{jobId}/decisions:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1import-jobs~1{jobId}~1decisions
+  /organizations/{organizationId}/events/{eventId}/import-jobs/{jobId}/application:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1import-jobs~1{jobId}~1application
+  /organizations/{organizationId}/events/{eventId}/export-jobs/{jobId}/download:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1export-jobs~1{jobId}~1download
+  /organizations/{organizationId}/data-requests/{requestId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1data-requests~1{requestId}
+  /me/notifications:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1me~1notifications
+  /me/notifications/{notificationId}/read:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1me~1notifications~1{notificationId}~1read
+  /organizations/{organizationId}/events/{eventId}/attendees/{attendeeId}/needs:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1attendees~1{attendeeId}~1needs
+  /organizations/{organizationId}/events/{eventId}/attendees/{attendeeId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1attendees~1{attendeeId}
+  /organizations/{organizationId}/events/{eventId}/free-orders:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1free-orders
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}/access-link:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}~1access-link
+  /organizations/{organizationId}/events/{eventId}/responsibilities/{responsibilityId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1responsibilities~1{responsibilityId}
+  /organizations/{organizationId}/events/{eventId}/operational-areas/{areaId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1operational-areas~1{areaId}
+  /organizations/{organizationId}/events/{eventId}/expense-categories/{categoryId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1expense-categories~1{categoryId}
+  /organizations/{organizationId}/events/{eventId}/risks/{riskId}/backup-plans/{backupPlanId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1risks~1{riskId}~1backup-plans~1{backupPlanId}
+  /organizations/{organizationId}/events/{eventId}/cancellation-proposals/{proposalId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1cancellation-proposals~1{proposalId}
+  /me/notifications/{notificationId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1me~1notifications~1{notificationId}
+  /organizations/{organizationId}/retention-settings:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1retention-settings
+  /organizations/{organizationId}/events/{eventId}/admissions/{admissionId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1admissions~1{admissionId}
+  /organizations/{organizationId}/events/{eventId}/tickets/{ticketId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1events~1{eventId}~1tickets~1{ticketId}
+  /organizations/{organizationId}/memory-promotions/{promotionId}:
+    $ref: ./event-dynamics-openapi.yaml#/paths/~1organizations~1{organizationId}~1memory-promotions~1{promotionId}
+components:
+  securitySchemes:
+    teamSession:
+      type: http
+      scheme: bearer
+      description: |
+        Team/organizer session credential. Expires after 12 hours without
+        activity and 7 days absolutely (NFR-SEC-08). Sensitive operations
+        additionally require password reauthentication within the preceding
+        10 minutes.
+    secureLink:
+      type: http
+      scheme: bearer
+      description: Opaque 256-bit purchaser/attendee session bearer. Scope and capabilities bind one order
+        or ticket. Expires at min(issue + 24h, parent grant expiry); parent revocation invalidates sessions.
+        Email grants last 30 days. Use POST /public/access-sessions for exchange.
+    deviceRecovery:
+      type: http
+      scheme: bearer
+      description: Separate device-bound upload-only recovery credential. It confers no admission, dataset-download,
+        refresh or workspace access. Preserves recovery after admission lease expiry/revocation; suspected
+        compromise uses audited operator recovery.
+    checkoutSession:
+      type: http
+      scheme: bearer
+      description: Opaque short-lived checkout bootstrap session; creates orders and scopes their creation
+        retries. Not a team login or access to other orders.
