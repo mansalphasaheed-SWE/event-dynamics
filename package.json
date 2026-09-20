@@ -1,0 +1,13 @@
+{
+  "name": "event-dynamics",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Event planning, logistics and ticketing platform.",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=22.13.0 <23",
+    "pnpm": ">=9.15.4 <10"
+  },
+  
+  "scripts": {}
+}
