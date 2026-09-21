@@ -79,6 +79,26 @@ export default tseslint.config(
               }
             }
           }
+        },
+        {
+          from: {
+            element: {
+              type: 'bounded-context',
+              captured: {
+                context: 'identity'
+              },
+            },
+          },
+          disallow: {
+            to: {
+              element: {
+                type: 'bounded-context',
+                captured: {
+                  context: 'commerce',
+                },
+              },
+            },
+          },
         }
       ],
     },
