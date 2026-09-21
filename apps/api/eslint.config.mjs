@@ -66,6 +66,20 @@ export default tseslint.config(
             to: { element: { type: 'bounded-context' } },
           },
         },
+        {
+          from: { element: { type: 'bounded-context' } },
+          disallow: {
+            to: {
+              element: {
+                type: 'bounded-context',
+                captured: {
+                  context: '!{{ from.element.captured.context }}',
+                },
+                fileInternalPath: '!public.ts'
+              }
+            }
+          }
+        }
       ],
     },
   ],
