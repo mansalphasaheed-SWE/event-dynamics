@@ -492,7 +492,7 @@ These are bounded implementation/provider dependencies, not a reason to redesign
 
 **Current state:** kernel design documented; no repository initialized or application code written in this task; all K-tests not run. Existing HLD v1.3, Stack v2.2 and API v0.2.0 remain the baseline. Earlier conversational examples were teaching examples, not implemented endpoints or schemas.
 
-**User workflow:** learn through implementation, one piece at a time; no requirement to memorize or read the whole corpus first. Before implementation, ask for the item the user wanted to show at the end of kernel design. Once reviewed, start at 0A and establish the actual repository/environment instead of assuming one exists.
+**User workflow:** learn through implementation, one piece at a time; no requirement to memorize or read the whole corpus first. Start at 0A and establish the actual repository/environment instead of assuming one exists.
 
 **Future chat continuity:** attach this document to project sources alongside the current authoritative corpus. At each piece/slice completion, update this section with repository/branch/commit, files changed, tests and evidence, open gates and exact next step. A new chat should read that current handoff and relevant sections; it should not infer progress from a past plan.
 

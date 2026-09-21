@@ -305,6 +305,9 @@ Redis appears for three jobs only:
 Inside the single artifact, the code is partitioned into modules with enforced dependency rules. A *module* owns its tables, exposes an application service interface, and may not be reached around.
 
 ```mermaid
+---
+id: ad47201c-d9ba-4a5c-a938-5b7a225bf47d
+---
 flowchart TB
     subgraph Kernel["Shared kernel — every module depends on this"]
         K_AUTHZ["Authorization; policy engine, scope resolution"]

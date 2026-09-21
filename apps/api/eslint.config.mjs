@@ -1,6 +1,7 @@
 // @ts-check
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import boundaries from "eslint-plugin-boundaries"
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -11,6 +12,65 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
+  {
+    plugins: {
+      boundaries,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: `${import.meta.dirname}/tsconfig.json`,
+        },
+      },
+      'boundaries/root-path': import.meta.dirname,
+      'boundaries/legacy-templates': false,
+      'boundaries/elements': [
+        {
+          type: 'kernel',
+          pattern: 'src/kernel',
+          partialMatch: false
+        },
+        {
+          type: "configuration",
+          pattern: 'src/config',
+          partialMatch: false
+        },
+        {
+          type: 'infrastructure',
+          pattern: 'src/infrastructure',
+          partialMatch: false
+        },
+        {
+          type: 'composition',
+          pattern: 'src/composition',
+          partialMatch: false
+        },
+        {
+          type: 'bounded-context',
+          pattern: 'src/modules/*',
+          capture: ['context'],
+          partialMatch: false
+        },
+      ],
+    },
+    rules: {
+      ...boundaries.configs.recommended.rules,
+  'boundaries/dependencies': [
+    'error',
+    {
+      default: 'allow',
+      policies: [
+        {
+          from: { element: { type: 'kernel' } },
+          disallow: {
+            to: { element: { type: 'bounded-context' } },
+          },
+        },
+      ],
+    },
+  ],
+},
+  },
   {
     languageOptions: {
       globals: {

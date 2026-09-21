@@ -9,5 +9,11 @@
     "pnpm": ">=9.15.4 <10"
   },
   
-  "scripts": {}
+  "scripts": {
+    "build": "pnpm --filter api build",
+    "dev": "pnpm --filter api start:dev",
+    "lint": "pnpm --filter api lint",
+    "lint:fix": "pnpm --filter api lint:fix",
+    "test": "pnpm --filter api test"
+  }
 }
