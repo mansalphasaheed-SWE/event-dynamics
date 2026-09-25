@@ -16,6 +16,9 @@
     "lint": "pnpm --filter api lint",
     "lint:fix": "pnpm --filter api lint:fix",
     "test": "pnpm --filter api test",
-    "test:e2e": "pnpm --filter api test:e2e"
+    "test:e2e": "pnpm --filter api test:e2e",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f event_dynamics_dev"
   }
 }
