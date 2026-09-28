@@ -3,7 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
-import { beforeEach, it, describe, afterEach } from 'vitest';
+import { beforeEach, it, describe, afterEach, vi } from 'vitest';
+import { DATABASE_TOKEN } from '../src/infrastructure/database/database.tokens';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -11,7 +12,10 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(DATABASE_TOKEN)
+      .useValue({ execute: vi.fn().mockResolvedValue(undefined) })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

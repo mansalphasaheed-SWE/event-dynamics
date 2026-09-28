@@ -37,7 +37,46 @@ These PostgreSQL variables initialize an empty data volume. Changing them
 later does not automatically change existing database users, passwords,
 or databases.
 
-The API also uses NODE_ENV and PORT, validated at startup.
+The API validates these settings at startup:
+
+| Variable | Purpose |
+|---|---|
+| `NODE_ENV` | `development`, `test` or `production` |
+| `PORT` | API listening port; local example uses `3000` |
+| `DATABASE_URL` | PostgreSQL connection for `event_dynamics_runtime` |
+| `DB_POOL_MAX` | Maximum connections in the API runtime pool |
+| `DB_CONNECTION_TIMEOUT_MS` | Finite connection and query timeout in milliseconds |
+
+The development `DATABASE_URL` must use `event_dynamics_runtime` at
+`127.0.0.1:5433/event_dynamics_dev`.
+Development URLs do not accept query parameters or fragments; `pg`
+can use query parameters to override connection details such as the
+host or user after the URL is validated.
+Keep its real password in the ignored `.env` file, not in `.env.example`.
+The migrator has a different credential and owns application schemas and
+migration-created objects; it is for migration commands, never the API pool.
+The administrator is for bootstrap work only. Dispatcher and retention
+credentials are separate and are not loaded into the API configuration.
+The API currently loads `.env`; `.env.local` is not loaded automatically.
+
+The development pool defaults to a maximum of 5 connections and a
+5,000 ms connection timeout. Development allows 1–5 connections;
+other environments allow 1–20. The validated timeout range is
+1–30,000 ms. The API creates one runtime pool, uses this timeout for
+connection and query attempts, and runs `select 1` through Drizzle
+before reporting successful startup. If the check fails, startup stops
+and the pool is closed. The pool also closes during normal Nest shutdown.
+
+For production, start from `.env.production.example` and supply a real
+runtime URL through deployment secrets. Production requires explicit
+`DB_POOL_MAX` and `DB_CONNECTION_TIMEOUT_MS`; no local URL or credential
+is suitable. The example's 5 connections and 5,000 ms timeout are
+provisional per-process values, not a capacity finding. Before deploying,
+budget the maximum connections across all API pools, workers and replicas,
+leave headroom for administration, and size each pool from measured
+transaction concurrency as required by HLD section 5.3. The production
+database endpoint, credentials, replica counts and final pool budgets
+have not yet been selected or tested.
 
 ## Start the Database
 
@@ -58,6 +97,19 @@ docker compose ps
 
 Wait until the status reports `healthy`.
 
+## Start the API
+
+With PostgreSQL healthy and the runtime `DATABASE_URL` set in `.env`, run
+this from the repository root:
+
+```powershell
+pnpm --filter api start
+```
+
+Successful startup confirms that the API's runtime credentials connect
+through host port `5433`. Press Ctrl+C to stop the API. A failed startup
+reports a generic database check error without printing the URL or password.
+
 ## View Logs
 
 ```powershell
@@ -69,7 +121,7 @@ the database continues running.
 
 ## Connection Details
 
-For a database client running on Windows:
+For an administrator database client running on Windows:
 
 | Setting | Value |
 |---|---|
@@ -87,7 +139,7 @@ The port mapping is `127.0.0.1:5433:5432`:
 The administrator account is for local setup and administration.
 Restricted migrator, runtime, dispatcher and retention accounts are established.
 See the [database permissions guide](database-permissions.md) for ordered setup,
-credentials, verified access and remaining connection checks.
+role responsibilities, credentials and permission verification.
 
 ## Connect Inside the Container
 
@@ -164,5 +216,10 @@ The following check has been completed successfully:
 
 This persistent database is for manual local development.
 
-Automated database integration tests will use separate, disposable
-PostgreSQL containers through Testcontainers.
+Run the isolated API integration test from the repository root with
+`pnpm --filter api test:integration`. It starts a disposable PostgreSQL
+18.6 container through Testcontainers, creates a restricted runtime role,
+and checks `current_database()` and `current_user` through Nest-injected
+Drizzle. It uses generated test credentials and explicit test settings;
+it does not load the development `.env` or touch the Compose volume.
+The ordinary `pnpm test` command excludes this integration test.

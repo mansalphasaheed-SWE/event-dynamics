@@ -2,7 +2,7 @@
 
 ## Responsibilities
 
-This checkpoint implements Kernel Design sections 5.1 and 13.1-13.2, HLD sections 7.3 and 5.3, and Technology Stack section 3. It does not prove tenant isolation. RLS, tenant context, table-specific grants and pool limits remain future work.
+This checkpoint implements Kernel Design sections 5.1 and 13.1-13.2, HLD sections 7.3 and 5.3, and Technology Stack section 3. It does not prove tenant isolation. RLS, tenant context, table-specific grants and production pool sizing remain future work.
 
 | Identity | Responsibility and current access |
 |---|---|
@@ -96,7 +96,7 @@ To repeat only the existing service-role TCP checks:
 python -u scripts/database/verify-permissions.py --development --tcp --login-only --roles dispatcher retention --credentials-file .env.database-services
 ```
 
-These TCP checks use container loopback port 5432. Host port 5433 and the API pool are separate pending integration checks and are not prerequisites for closing the role-permission checkpoint.
+These TCP checks use container loopback port 5432. Host port 5433 and the API pool were checked later as a separate integration task; they were not prerequisites for closing the role-permission checkpoint.
 
 ## Audit correction and regression coverage
 
@@ -129,7 +129,18 @@ Docker Desktop was initially stopped; it was started and the final disposable ch
 
 Local lint, 16 tests and API build passed in the preceding implementation run; this follow-up changes only verification and documentation and does not claim another application test run. GitHub CI status remains unconfirmed and unchanged.
 
-The role/permission checkpoint is complete: the corrected disposable suite and the existing development socket and TCP suites all passed. No checkpoint verification blockers remain. Drizzle/node-postgres, host/API connectivity, pool limits, table-specific grants, RLS/isolation tests, dispatcher/pg-boss and retention operations are separate future work; implementing Drizzle is not required to close this checkpoint.
+The role/permission checkpoint is complete: the corrected disposable suite and the existing development socket and TCP suites all passed. No checkpoint verification blockers remain. Drizzle/node-postgres and host/API connectivity were separate follow-up work, now verified below. Table-specific grants, RLS/isolation tests, production pool sizing, dispatcher/pg-boss and retention operations remain separate future work; implementing Drizzle was not required to close this checkpoint.
+
+## API integration follow-up - 2026-09-28
+
+The API connected through host port 5433 using its existing runtime credential,
+completed a Drizzle startup query, and closed cleanly on Ctrl+C. Incorrect
+credentials and an unavailable endpoint stopped startup with a generic error.
+A separate Testcontainers PostgreSQL 18.6 test passed with generated credentials:
+Nest-injected Drizzle reported `event_dynamics_dev` and
+`event_dynamics_runtime`, then the pool closed. This supersedes the pending
+host/API row in the historical 2026-09-24 results table. It does not add
+table-specific grants or establish tenant isolation.
 
 ## Official references checked
 

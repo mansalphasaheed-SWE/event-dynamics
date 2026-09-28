@@ -75,6 +75,7 @@ Run these from the repository root:
 | `pnpm lint:fix` | Apply automatic lint fixes |
 | `pnpm test` | Run all tests included in the Vitest configuration |
 | `pnpm test:e2e` | Run only E2E tests |
+| `pnpm --filter api test:integration` | Run the isolated API test against disposable PostgreSQL |
 | `pnpm db:up` | Start local PostgreSQL in the background |
 | `pnpm db:down` | Remove the database container while retaining its named volume |
 | `pnpm db:logs` | Follow PostgreSQL logs |

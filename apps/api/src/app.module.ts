@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
+import { DatabaseModule } from './infrastructure/database/database.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { validate } from './env.validation';
       ignoreEnvFile: process.env.NODE_ENV === 'test',
       validate,
     }),
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

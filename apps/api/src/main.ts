@@ -6,6 +6,8 @@ import type { EnvironmentVariables } from './env.validation';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableShutdownHooks();
+
   const config =
     app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
   const port = config.get('PORT', { infer: true });
