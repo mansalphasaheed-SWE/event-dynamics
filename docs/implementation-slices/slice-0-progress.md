@@ -44,10 +44,10 @@ role. Production database configuration remains pending.
 - [x] Separate disposable PostgreSQL API integration test uses a restricted runtime role
 - [x] Local lint, tests and API build pass
 - [x] Runtime has USAGE but no CREATE permission on kernel and outbox
+- [x] Standalone migration workflow verified on disposable PostgreSQL, including the root package script
 
 ## Remaining
 - [ ] Select production database endpoint, secret delivery and pool budgets before deployment
-- [ ] Establish the migration workflow
 - [ ] Define and verify table-specific runtime grants as objects are introduced
 - [ ] Implement transaction infrastructure
 - [ ] Verify RLS and tenant isolation against real PostgreSQL
@@ -71,6 +71,11 @@ role. Production database configuration remains pending.
 | Local lint | Passed |
 | Full API test suite | Passed locally on 2026-09-28: 41 tests in 5 files; disposable integration test runs separately |
 | API build | Passed |
+| Migration tooling build | Passed in the current sandbox with the installed Nest CLI |
+| Migration workflow integration | Passed with approved Docker access: 7 disposable PostgreSQL migration tests, including root `pnpm db:migrate`, replay, whole-batch rollback, concurrency, ownership regression and restricted history access |
+| Persistent development migration execution | Unverified; apply the first reviewed application migration when ready, without adding an artificial table |
+| Migration-workflow lint | Passed with installed ESLint after formatting the integration test |
+| Current ordinary test suite | Passed locally in the sandbox: 41 tests in 5 files; migration integration runs separately |
 | PostgreSQL startup and health | Passed |
 | Database connection inside container | Passed |
 | Persistence across container recreation | Passed |

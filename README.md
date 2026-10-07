@@ -76,6 +76,7 @@ Run these from the repository root:
 | `pnpm test` | Run all tests included in the Vitest configuration |
 | `pnpm test:e2e` | Run only E2E tests |
 | `pnpm --filter api test:integration` | Run the isolated API test against disposable PostgreSQL |
+| `pnpm db:migrate` | Apply reviewed SQL migrations with a separate migrator URL |
 | `pnpm db:up` | Start local PostgreSQL in the background |
 | `pnpm db:down` | Remove the database container while retaining its named volume |
 | `pnpm db:logs` | Follow PostgreSQL logs |
@@ -91,6 +92,7 @@ Run these from the repository root:
 - [Slice 0 progress tracker](docs/implementation-slices/slice-0-progress.md)
 - [Local database guide](docs/development/local-database.md)
 - [Database permissions and verification](docs/development/database-permissions.md)
+- [Database migrations](docs/development/database-migrations.md)
 - [Debugging journal](docs/debugging/)
 
 Consult the relevant requirements, design sections and architecture

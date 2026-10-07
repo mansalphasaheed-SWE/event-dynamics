@@ -140,6 +140,8 @@ The administrator account is for local setup and administration.
 Restricted migrator, runtime, dispatcher and retention accounts are established.
 See the [database permissions guide](database-permissions.md) for ordered setup,
 role responsibilities, credentials and permission verification.
+After provisioning, use the separate [database migrations guide](database-migrations.md)
+to apply reviewed application changes with `event_dynamics_migrator`.
 
 ## Connect Inside the Container
 
@@ -223,3 +225,4 @@ and checks `current_database()` and `current_user` through Nest-injected
 Drizzle. It uses generated test credentials and explicit test settings;
 it does not load the development `.env` or touch the Compose volume.
 The ordinary `pnpm test` command excludes this integration test.
+The same integration command also runs the disposable migration-workflow suite.
