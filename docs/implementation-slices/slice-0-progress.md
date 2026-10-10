@@ -2,75 +2,100 @@
 
 ## Objective
 
-Establish the shared technical foundation required by later Event Dynamics modules.
+Establish the shared technical foundation required by later
+Event Dynamics modules.
 
 ## Status
 
-In progress.
+In progress. The database role/permission checkpoint is complete: corrected
+disposable PostgreSQL checks and existing development socket/TCP checks passed
+for all four roles. The API's runtime Drizzle pool and startup connection
+through the published development database port are verified. A separate
+disposable PostgreSQL integration test also passes with a restricted runtime
+role. Production database configuration remains pending.
 
 ## Completed
 
+- [x] Git repository initialized and GitHub repository created
 - [x] pnpm workspace created
 - [x] NestJS API scaffolded
-- [x] Git repository initialized
-- [x] Boundary lint rules added
+- [x] Module boundary lint rules added
 - [x] Vitest configured with SWC
-- [x] Unit test migrated from Jest to Vitest
-- [x] E2E test migrated from Jest to Vitest
+- [x] Unit and E2E tests migrated to Vitest
 - [x] Jest configuration and dependencies removed
-- [x] Lint passes
-- [x] Unit tests pass
-- [x] E2E tests pass
-- [x] API build passes
-- [x] CI requirements reviewed
+- [x] GitHub Actions CI workflow configured and pushed
+- [x] PostgreSQL Compose configuration prepared
+- [x] Local environment file and example prepared
+- [x] Database management scripts added
+- [x] PostgreSQL startup and health verified
+- [x] Database connection through psql inside the container verified
+- [x] Data persistence across container recreation verified
+- [x] Persistence probe table removed
+- [x] Initial NODE_ENV and PORT validation implemented
+- [x] API bootstrap uses the validated port
+- [x] Stable Drizzle ORM, node-postgres and pg types added at exact versions
+- [x] Drizzle/node-postgres integration verified through the Nest-injected provider
+- [x] Configuration validation tests pass
+- [x] Runtime DATABASE_URL and pool settings validated; development defaults documented
+- [x] Production configuration example added with explicit pool settings
+- [x] One shared runtime pool and typed Drizzle provider registered in Nest
+- [x] Drizzle startup query, failure cleanup and normal pool shutdown added
+- [x] API startup connected to the development database through the published port
+- [x] Separate disposable PostgreSQL API integration test uses a restricted runtime role
+- [x] Local lint, tests and API build pass
+- [x] Runtime has USAGE but no CREATE permission on kernel and outbox
+- [x] Standalone migration workflow verified on disposable PostgreSQL, including the root package script
 
-## Current work
+## Remaining
+- [ ] Select production database endpoint, secret delivery and pool budgets before deployment
+- [ ] Define and verify table-specific runtime grants as objects are introduced
+- [ ] Implement transaction infrastructure
+- [ ] Verify RLS and tenant isolation against real PostgreSQL
+- [ ] Implement money and time primitives
+- [ ] Implement context, authority and authorization infrastructure
+- [ ] Implement tenant-scoped repositories
+- [ ] Implement transactional audit
+- [ ] Implement idempotency and replay handling
+- [ ] Implement outbox, dispatcher and worker-effect handling
+- [ ] Complete remaining kernel acceptance and operational checks
 
-- [x] Add the CI workflow
+## Awaiting Verification
+
+- [ ] First successful GitHub Actions CI run
+  - Last confirmed status: waiting for a runner.
 
 ## Verification
 
-| Check | Result | Date |
-|---|---|---|
-| `pnpm lint` | Passed |  |
-| `pnpm test` | Passed |  |
-| `pnpm test:e2e` | Passed |  |
-| `pnpm build` | Passed |  |
-| GitHub Actions CI | Pending first push |  |
-
-## Pending
-
-- [ ] Add PostgreSQL development setup
-- [ ] Add environment configuration
-- [ ] Add Drizzle ORM
-- [ ] Add migration workflow
-- [ ] Add transaction infrastructure
-- [ ] Add database integration tests
-- [ ] Implement remaining Slice 0 kernel components
-
-## Verification
-
-| Check | Result | Date |
-|---|---|---|
-| `pnpm lint` | Passed |  |
-| `pnpm test` | Passed |  |
-| `pnpm test:e2e` | Passed |  |
-| `pnpm build` | Passed |  |
-
-## Related commits
-
-| Commit | Purpose |
+| Check | Result |
 |---|---|
-| Add commit hash | Jest-to-Vitest migration |
+| Local lint | Passed |
+| Full API test suite | Passed locally on 2026-09-28: 41 tests in 5 files; disposable integration test runs separately |
+| API build | Passed |
+| Migration tooling build | Passed in the current sandbox with the installed Nest CLI |
+| Migration workflow integration | Passed with approved Docker access: 7 disposable PostgreSQL migration tests, including root `pnpm db:migrate`, replay, whole-batch rollback, concurrency, ownership regression and restricted history access |
+| Persistent development migration execution | Unverified; apply the first reviewed application migration when ready, without adding an artificial table |
+| Migration-workflow lint | Passed with installed ESLint after formatting the integration test |
+| Current ordinary test suite | Passed locally in the sandbox: 41 tests in 5 files; migration integration runs separately |
+| PostgreSQL startup and health | Passed |
+| Database connection inside container | Passed |
+| Persistence across container recreation | Passed |
+| API database configuration validation | Passed: development defaults, explicit production pool settings, and startup refusal for empty or malformed URLs |
+| API database module and startup tests | Passed locally: shared pool identity, startup success/failure and cleanup, Nest shutdown |
+| API runtime database startup | Passed against existing development PostgreSQL through 127.0.0.1:5433; Ctrl+C shutdown exited cleanly |
+| API runtime database failure checks | Passed: incorrect password and unavailable local endpoint stopped startup with a generic error; no credentials printed |
+| Disposable API database integration | Passed locally on 2026-09-28 against the final file: Nest-injected Drizzle queried `current_database()` and `current_user` as `event_dynamics_runtime` in `event_dynamics_dev`; pool closed; 1 test passed |
+| Corrected disposable role/permission suite | Passed: PostgreSQL 18.6 SCRAM TCP, type/column audit regressions and cleanup |
+| Final development role/permission suite | Passed through separate socket and TCP logins for all four roles; probes removed |
+| Dispatcher/retention development TCP authentication | Passed separately and in final full TCP suite |
+| Migrator/runtime development TCP authentication | Passed with existing credentials; no rotation |
+| Production API database connection | Not configured or tested |
+| GitHub Actions CI | Successful run unconfirmed |
+Detailed commands, scope and results: [database permissions](../development/database-permissions.md).
+Table-specific grants and RLS/tenant isolation checks remain pending.
 
-## Decisions
+Role-permission sign-off does not require Drizzle or host/API integration.
+No role-permission blockers remain. To repeat the login check locally (passwords are masked and unchanged):
 
-- One Vitest configuration is used for unit and E2E discovery.
-- Unit and E2E suites are separated by file patterns and scripts.
-- Jest is removed only after Vitest replacement tests pass.
-- CI will run lint, tests, and build.
-
-## Open questions
-
-- Which CI provider will host the first workflow?
-- Will PostgreSQL run through Docker locally and as a CI service?
+```powershell
+python -u scripts/database/verify-permissions.py --development --tcp --login-only --roles migrator runtime --prompt-passwords
+```

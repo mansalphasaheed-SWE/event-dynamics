@@ -2,37 +2,84 @@
 
 An event planning, logistics and ticketing platform.
 
-## Project status
+## Development Progress
 
-**Status updated:** 20 September 2026
+Implementation progresses through documented slices, beginning with
+Slice 0: the shared technical foundation used by later features.
 
-The project is preparing for implementation. The design corpus is organized, and the next setup step is to initialize Git and create the first project checkpoint.
+See the [Slice 0 progress tracker](docs/implementation-slices/slice-0-progress.md)
+for completed work, pending tasks and verification results.
 
-Slice 0 is the first implementation slice. It covers the shared kernel foundations used by later features:
-
-- tenancy and authorization;
-- audit;
-- idempotency;
-- money and time;
-- transactional outbox;
-- migration, testing and deployment foundations.
-
-The application has not yet been scaffolded. Follow the current implementation handoff and the relevant slice design document for the next action.
-
-## Development status
-
-The project progresses through documented implementation slices. The README gives the project overview; the current handoff records the exact next step and completed work.
-
-Update the handoff after each meaningful checkpoint.
-
-## Selected technology stack
+## Selected Technology Stack
 
 - TypeScript and NestJS
 - PostgreSQL
 - Drizzle ORM with node-postgres
 - Zod
 - pg-boss
-- pnpm as the package manager
+- Vitest with SWC
+- pnpm workspaces
+
+This is the selected stack. The progress tracker records which
+components have been integrated and verified.
+
+## Repository Structure
+
+- `apps/api/` — NestJS API
+- `packages/` — workspace location for shared packages
+- `docs/` — requirements, architecture, implementation and development guides
+- `compose.yaml` — local PostgreSQL configuration
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js and pnpm versions matching the root `package.json`
+- Docker Desktop running for local database work
+
+Use pnpm for dependency management and project scripts.
+
+### Install Dependencies
+
+From the repository root:
+
+    pnpm install
+
+### Configure the Environment
+
+Copy `.env.example` to `.env` and supply your local values.
+
+The API validates its application settings at startup.
+Database initialization settings are used by Docker Compose.
+
+### Start PostgreSQL
+
+    pnpm db:up
+
+See the [local database guide](docs/development/local-database.md)
+for connection details, health checks, logs and persistent storage.
+
+### Start the API
+
+    pnpm dev
+
+## Project Scripts
+
+Run these from the repository root:
+
+| Command | Purpose |
+|---|---|
+| `pnpm dev` | Start the API in development mode |
+| `pnpm build` | Build the API |
+| `pnpm lint` | Check lint rules, including module boundaries |
+| `pnpm lint:fix` | Apply automatic lint fixes |
+| `pnpm test` | Run all tests included in the Vitest configuration |
+| `pnpm test:e2e` | Run only E2E tests |
+| `pnpm --filter api test:integration` | Run the isolated API test against disposable PostgreSQL |
+| `pnpm db:migrate` | Apply reviewed SQL migrations with a separate migrator URL |
+| `pnpm db:up` | Start local PostgreSQL in the background |
+| `pnpm db:down` | Remove the database container while retaining its named volume |
+| `pnpm db:logs` | Follow PostgreSQL logs |
 
 ## Documentation
 
@@ -41,18 +88,26 @@ Update the handoff after each meaningful checkpoint.
 - [Architecture decision records](docs/adr/)
 - [API specifications](docs/api/)
 - [Implementation slices](docs/implementation-slices/)
-- [Slice 0 kernel implementation design](docs/implementation-slices/Event-Dynamics-Kernel-Implementation-Design-v1.0.md)
+- [Slice 0 kernel design](docs/implementation-slices/Event-Dynamics-Kernel-Implementation-Design-v1.0.md)
+- [Slice 0 progress tracker](docs/implementation-slices/slice-0-progress.md)
+- [Local database guide](docs/development/local-database.md)
+- [Database permissions and verification](docs/development/database-permissions.md)
+- [Database migrations](docs/development/database-migrations.md)
+- [Debugging journal](docs/debugging/)
 
-Consult the relevant requirements, design documents and architecture
-decisions before implementing a feature.
+Consult the relevant requirements, design sections and architecture
+decisions before implementing a component.
 
-## Development setup
+Update the progress tracker after meaningful checkpoints. Record
+reusable debugging findings in the debugging journal.
 
-Setup instructions will be added as the application is scaffolded.
-Use pnpm for dependency management and project scripts.
-
-## Configuration and secrets
+## Configuration and Secrets
 
 Do not commit passwords, API keys or real environment files.
-Use example environment files containing placeholders to document
-required configuration.
+
+Keep local values in ignored environment files. Use committed example
+files with placeholders to document required configuration.
+
+The PostgreSQL bootstrap administrator is for database setup and
+administration. Application connections must use an appropriately
+restricted database account.

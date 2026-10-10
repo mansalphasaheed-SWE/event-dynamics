@@ -8,6 +8,9 @@ node_modules/
 !.env.example
 !.env.*.example
 
+# Existing local database credentials (never commit this file)
+docs/security/secrets.md
+
 # Generated output and test coverage
 dist/
 build/
